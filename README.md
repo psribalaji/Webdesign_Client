@@ -1,7 +1,3 @@
-# MERN Client
-
-For those who wish to separate [MERN Boilerplate](https://github.com/djizco/mern-boilerplate) into the client and server, this repo is for the client. This project is meant to be used alongside [MERN Server](https://github.com/djizco/mern-server).
-
 ## Requirements
 
 * Operating System: MacOS or Linux
