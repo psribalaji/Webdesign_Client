@@ -148,6 +148,11 @@ export default function Navigation({ pathname }) {
                   Login
                 </Title>
               </Navbar.Item>
+              <Navbar.Item onClick={() => dispatch(push('/restaurant'))} link>
+                <Title size="6">
+                  Register Restaurant
+                </Title>
+              </Navbar.Item>
               <Navbar.Item onClick={() => dispatch(push('/register'))} link>
                 <Button color="success">Sign Up</Button>
               </Navbar.Item>

@@ -4,6 +4,8 @@ import { handleSuccess, handleError } from '_utils/api';
 const apiURL = process.env.API_URL || '';
 
 export const postTodo = info =>
+
+  //console.log("NN ", info)
   request.post(`${apiURL}/api/todos`)
     .withCredentials()
     .send(info)
