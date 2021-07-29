@@ -5,7 +5,7 @@
   "main": "client/index.js",
   "scripts": {
     "build": "./scripts/build.sh",
-    "start": "start.sh",
+    "start": "./start.sh",
     "lint": "eslint client",
     "lint:fix": "eslint client --fix",
     "test": "./scripts/test.sh",
@@ -61,6 +61,7 @@
     "immutability-helper": "^3.1.1",
     "immutable": "^3.8.2",
     "json-style-converter": "^1.0.3",
+    "material-ui-search-bar": "^1.0.0",
     "prop-types": "^15.7.2",
     "ramda": "^0.27.1",
     "react": "^16.14.0",
