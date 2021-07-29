@@ -31,6 +31,8 @@ export default function Register() {
   const [passwordMessage, setPasswordMessage] = useState('');
   const [usernameAvailable, setUsernameAvailable] = useState(false);
   const [passwordValid, setPasswordValid] = useState(false);
+  const [role, setRole] = useState("user");
+
 
   const checkPassword = (newUsername, newPassword) => {
     const { valid, message } = validatePassword(newUsername, newPassword);
@@ -78,6 +80,7 @@ export default function Register() {
       const newUser = {
         username,
         password,
+        role
       };
 
       dispatch(attemptRegister(newUser))
