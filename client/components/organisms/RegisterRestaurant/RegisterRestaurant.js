@@ -1,122 +1,137 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-import R from 'ramda';
+import React, { useState } from 'react'
+import { Link } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
+import R from 'ramda'
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCheck } from '@fortawesome/free-solid-svg-icons/faCheck';
-import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons/faExclamationTriangle';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faCheck } from '@fortawesome/free-solid-svg-icons/faCheck'
+import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons/faExclamationTriangle'
 
-import Box from 'react-bulma-companion/lib/Box';
-import Button from 'react-bulma-companion/lib/Button';
-import Title from 'react-bulma-companion/lib/Title';
-import Field from 'react-bulma-companion/lib/Field';
-import Control from 'react-bulma-companion/lib/Control';
-import Icon from 'react-bulma-companion/lib/Icon';
-import Input from 'react-bulma-companion/lib/Input';
-import Label from 'react-bulma-companion/lib/Label';
-import Help from 'react-bulma-companion/lib/Help';
+import Box from 'react-bulma-companion/lib/Box'
+import Button from 'react-bulma-companion/lib/Button'
+import Title from 'react-bulma-companion/lib/Title'
+import Field from 'react-bulma-companion/lib/Field'
+import Control from 'react-bulma-companion/lib/Control'
+import Icon from 'react-bulma-companion/lib/Icon'
+import Input from 'react-bulma-companion/lib/Input'
+import Label from 'react-bulma-companion/lib/Label'
+import Help from 'react-bulma-companion/lib/Help'
 
-import useKeyPress from '_hooks/useKeyPress';
-import { postCheckUsername } from '_api/users';
-import { validateUsername, validatePassword } from '_utils/validation';
-import { attemptRegister } from '_thunks/auth';
+import useKeyPress from '_hooks/useKeyPress'
+import { postCheckUsername } from '_api/users'
+import { validateUsername, validatePassword } from '_utils/validation'
+import { attemptRegister, attemptRestuarantRegister } from '_thunks/auth'
 
 export default function RegisterRestaurant() {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch()
 
-  const [username, setUsername] = useState('');
-  const [usernameMessage, setUsernameMessage] = useState('');
-  const [password, setPassword] = useState('');
-  const [passwordMessage, setPasswordMessage] = useState('');
-  const [usernameAvailable, setUsernameAvailable] = useState(false);
-  const [passwordValid, setPasswordValid] = useState(false);
-  const [restaurantName, setRestaurantName] = useState('');
-
+  const [username, setUsername] = useState('')
+  const [usernameMessage, setUsernameMessage] = useState('')
+  const [password, setPassword] = useState('')
+  const [passwordMessage, setPasswordMessage] = useState('')
+  const [usernameAvailable, setUsernameAvailable] = useState(false)
+  const [passwordValid, setPasswordValid] = useState(false)
+  const [restaurantName, setRestaurantName] = useState('')
+  const [address, setaddress] = useState('')
+  const [pincode, setpincode] = useState('')
+  const [location, setlocation] = useState('')
+  const [role, setRole] = useState('admin')
 
   const checkPassword = (newUsername, newPassword) => {
-    const { valid, message } = validatePassword(newUsername, newPassword);
+    const { valid, message } = validatePassword(newUsername, newPassword)
 
-    setPasswordValid(valid);
-    setPasswordMessage(message);
-  };
+    setPasswordValid(valid)
+    setPasswordMessage(message)
+  }
 
-  const checkUsername = newUsername => {
-    const { valid, message } = validateUsername(newUsername);
+  const checkUsername = (newUsername) => {
+    const { valid, message } = validateUsername(newUsername)
 
     if (valid) {
-      setUsernameMessage('Checking username...');
-      setUsernameAvailable(false);
+      setUsernameMessage('Checking username...')
+      setUsernameAvailable(false)
 
       postCheckUsername(newUsername)
-        .then(res => {
-          setUsernameAvailable(res.available);
-          setUsernameMessage(res.message);
+        .then((res) => {
+          setUsernameAvailable(res.available)
+          setUsernameMessage(res.message)
         })
-        .catch(R.identity);
+        .catch(R.identity)
     } else {
-      setUsernameAvailable(valid);
-      setUsernameMessage(message);
+      setUsernameAvailable(valid)
+      setUsernameMessage(message)
     }
-  };
+  }
 
-  const updateUsername = newUserName => {
-    setUsername(newUserName);
-    checkPassword(newUserName, password);
-  };
+  const updateUsername = (newUserName) => {
+    setUsername(newUserName)
+    checkPassword(newUserName, password)
+  }
 
-  const handleUsernameChange = e => {
-    updateUsername(e.target.value);
-    checkUsername(e.target.value);
-  };
+  const handleUsernameChange = (e) => {
+    updateUsername(e.target.value)
+    checkUsername(e.target.value)
+  }
+  const handleAddressChange = (e) => {
+    setaddress(e.target.value)
+  }
+  const handleResturantChange = (e) => {
+    setRestaurantName(e.target.value)
+  }
+  const handlePincodeChange = (e) => {
+    setpincode(e.target.value)
+  }
+  const handleLocationChange = (e) => {
+    setlocation(e.target.value)
+  }
 
-  const handlePasswordChange = e => {
-    setPassword(e.target.value);
-    checkPassword(username, e.target.value);
-  };
+  const handlePasswordChange = (e) => {
+    setPassword(e.target.value)
+    checkPassword(username, e.target.value)
+  }
 
   const register = () => {
     if (usernameAvailable && passwordValid) {
       const newUser = {
         username,
         password,
-      };
+        role,
+        address,
+        restaurantName,
+        pincode,
+        location,
+      }
 
-      dispatch(attemptRegister(newUser))
-        .catch(R.identity);
+      dispatch(attemptRestuarantRegister(newUser)).catch(R.identity)
     }
-  };
+  }
 
-  useKeyPress('Enter', register);
+  useKeyPress('Enter', register)
 
   return (
-    <Box className="register">
-      <Title size="3">
-        Register Restaurant
-      </Title>
-      <hr className="separator" />
-      <p className="has-space-below">
+    <Box className='register'>
+      <Title size='3'>Register Restaurant</Title>
+      <hr className='separator' />
+      <p className='has-space-below'>
         Already a member?&nbsp;
-        <Link to="/login">
-          Login
-        </Link>
+        <Link to='/login'>Login</Link>
       </p>
       <Field>
-        <Label htmlFor="username">
-          Username
-        </Label>
+        <Label htmlFor='username'>Username</Label>
         <Control iconsRight>
           <Input
-            id="username"
-            placeholder="Username"
-            color={username ? (usernameAvailable ? 'success' : 'danger') : undefined}
+            id='username'
+            placeholder='Username'
+            color={
+              username ? (usernameAvailable ? 'success' : 'danger') : undefined
+            }
             value={username}
             onChange={handleUsernameChange}
           />
           {username && (
             <Icon
-              size="small"
-              align="right"
+              size='small'
+              align='right'
               color={usernameAvailable ? 'success' : 'danger'}
             >
               <FontAwesomeIcon
@@ -132,22 +147,22 @@ export default function RegisterRestaurant() {
         )}
       </Field>
       <Field>
-        <Label htmlFor="password">
-          Password
-        </Label>
+        <Label htmlFor='password'>Password</Label>
         <Control iconsRight>
           <Input
-            id="password"
-            placeholder="Password"
-            type="password"
-            color={password ? (passwordValid ? 'success' : 'danger') : undefined}
+            id='password'
+            placeholder='Password'
+            type='password'
+            color={
+              password ? (passwordValid ? 'success' : 'danger') : undefined
+            }
             value={password}
             onChange={handlePasswordChange}
           />
           {password && (
             <Icon
-              size="small"
-              align="right"
+              size='small'
+              align='right'
               color={passwordValid ? 'success' : 'danger'}
             >
               <FontAwesomeIcon
@@ -163,28 +178,67 @@ export default function RegisterRestaurant() {
         )}
       </Field>
       <Field>
-        <Label htmlFor="restaurantName">
-          Restaurant Name
-        </Label>
+        <Label htmlFor='restaurantName'>Restaurant Name</Label>
         <Control iconsRight>
           <Input
-            id="restaurantName"
-            placeholder="Restaurant Name"
-            type="password"
+            id='restaurantName'
+            placeholder='Restaurant Name'
+            type='text'
             // color={password ? (passwordValid ? 'success' : 'danger') : undefined}
-            value={password}
-            onChange={handlePasswordChange}
+            value={restaurantName}
+            onChange={handleResturantChange}
           />
-       
         </Control>
-        
       </Field>
-      <hr className="separator" />
-      <div className="has-text-right">
-        <Button color="success" onClick={register} disabled={!passwordValid || !usernameAvailable}>
+      <Field>
+        <Label htmlFor='address'>Restaurant Address</Label>
+        <Control iconsRight>
+          <Input
+            id='address'
+            placeholder='Restaurant Address'
+            type='text'
+            // color={password ? (passwordValid ? 'success' : 'danger') : undefined}
+            value={address}
+            onChange={handleAddressChange}
+          />
+        </Control>
+      </Field>
+      <Field>
+        <Label htmlFor='pincode'>Restaurant Zipcode</Label>
+        <Control iconsRight>
+          <Input
+            id='pincode'
+            placeholder='Restaurant Zipcode'
+            type='text'
+            // color={password ? (passwordValid ? 'success' : 'danger') : undefined}
+            value={pincode}
+            onChange={handlePincodeChange}
+          />
+        </Control>
+      </Field>
+      <Field>
+        <Label htmlFor='location'>Restaurant Location(City)</Label>
+        <Control iconsRight>
+          <Input
+            id='location'
+            placeholder='Restaurant Location(City)'
+            type='text'
+            // color={password ? (passwordValid ? 'success' : 'danger') : undefined}
+            value={location}
+            onChange={handleLocationChange}
+          />
+        </Control>
+      </Field>
+      <hr className='separator' />
+      <div className='has-text-right'>
+        <Button
+          color='success'
+          onClick={register}
+          disabled={!passwordValid || !usernameAvailable}
+        >
           Create Account
         </Button>
       </div>
     </Box>
-  );
+  )
 }

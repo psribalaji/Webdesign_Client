@@ -1,16 +1,21 @@
-import { push } from 'connected-react-router';
-import { snakeToCamelCase } from 'json-style-converter/es5';
-import { store as RNC } from 'react-notifications-component';
+import { push } from 'connected-react-router'
+import { snakeToCamelCase } from 'json-style-converter/es5'
+import { store as RNC } from 'react-notifications-component'
 
-import { postRegister, postLogin, postLogout } from '_api/auth';
-import { login, logout } from '_actions/user';
+import {
+  postRegister,
+  postLogin,
+  postLogout,
+  postRestuarantRegister,
+} from '_api/auth'
+import { login, logout } from '_actions/user'
 
-import { dispatchError } from '_utils/api';
+import { dispatchError } from '_utils/api'
 
-export const attemptLogin = user => dispatch =>
+export const attemptLogin = (user) => (dispatch) =>
   postLogin(user)
-    .then(data => {
-      dispatch(login(snakeToCamelCase(data.user)));
+    .then((data) => {
+      dispatch(login(snakeToCamelCase(data.user)))
 
       RNC.addNotification({
         title: 'Success!',
@@ -22,16 +27,16 @@ export const attemptLogin = user => dispatch =>
         dismiss: {
           duration: 5000,
         },
-      });
+      })
 
-      dispatch(push('/home'));
-      return data;
+      dispatch(push('/home'))
+      return data
     })
-    .catch(dispatchError(dispatch));
+    .catch(dispatchError(dispatch))
 
-export const attemptRegister = newUser => dispatch =>
+export const attemptRegister = (newUser) => (dispatch) =>
   postRegister(newUser)
-    .then(data => {
+    .then((data) => {
       RNC.addNotification({
         title: 'Success!',
         message: data.message,
@@ -42,17 +47,17 @@ export const attemptRegister = newUser => dispatch =>
         dismiss: {
           duration: 5000,
         },
-      });
+      })
 
-      return dispatch(attemptLogin(newUser));
+      return dispatch(attemptLogin(newUser))
     })
     .then(() => dispatch(push('/settings')))
-    .catch(dispatchError(dispatch));
+    .catch(dispatchError(dispatch))
 
-export const attemptLogout = () => dispatch =>
+export const attemptLogout = () => (dispatch) =>
   postLogout()
-    .then(data => {
-      dispatch(logout());
+    .then((data) => {
+      dispatch(logout())
 
       RNC.addNotification({
         title: 'Success!',
@@ -64,9 +69,30 @@ export const attemptLogout = () => dispatch =>
         dismiss: {
           duration: 5000,
         },
-      });
+      })
 
-      dispatch(push('/login'));
-      return data;
+      dispatch(push('/login'))
+      return data
     })
-    .catch(dispatchError(dispatch));
+    .catch(dispatchError(dispatch))
+
+export const attemptRestuarantRegister = (newUser) => (dispatch) =>
+  postRestuarantRegister(newUser)
+    .then((data) => {
+      RNC.addNotification({
+        title: 'Success!',
+        message: data.message,
+        type: 'success',
+        container: 'top-right',
+        animationIn: ['animated', 'fadeInRight'],
+        animationOut: ['animated', 'fadeOutRight'],
+        dismiss: {
+          duration: 5000,
+        },
+      })
+      console.log(data)
+
+      return dispatch(attemptLogin(newUser))
+    })
+    .then(() => dispatch(push('/settings')))
+    .catch(dispatchError(dispatch))
