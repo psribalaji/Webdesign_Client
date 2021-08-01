@@ -1,14 +1,14 @@
 import React from 'react';
 
-import GeneralProfile from '_organisms/GeneralProfile';
+import Menu from '../../organisms/Menu';
 
-export default function ProfileSettings() {
+export default function MenuSection() {
   return (
    
 
     <div className="profile-settings">
         {console.log("Step 1")}
-      <GeneralProfile />
+      <Menu />
     </div>
   );
 }

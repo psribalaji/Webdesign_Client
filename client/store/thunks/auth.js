@@ -28,8 +28,10 @@ export const attemptLogin = (user) => (dispatch) =>
           duration: 5000,
         },
       })
+      console.log("Login ", data.user.role);
+      dispatch(push(data))
 
-      dispatch(push('/home'))
+      data.user.role =='user' ? dispatch(push('/home')) : dispatch(push('/settings'))
       return data
     })
     .catch(dispatchError(dispatch))
@@ -48,10 +50,10 @@ export const attemptRegister = (newUser) => (dispatch) =>
           duration: 5000,
         },
       })
-
+     
       return dispatch(attemptLogin(newUser))
     })
-    .then(() => dispatch(push('/settings')))
+    .then(() =>  dispatch(push('/settings')))
     .catch(dispatchError(dispatch))
 
 export const attemptLogout = () => (dispatch) =>
@@ -70,7 +72,6 @@ export const attemptLogout = () => (dispatch) =>
           duration: 5000,
         },
       })
-
       dispatch(push('/login'))
       return data
     })
@@ -90,7 +91,7 @@ export const attemptRestuarantRegister = (newUser) => (dispatch) =>
           duration: 5000,
         },
       })
-      console.log(data)
+      console.log("Log ", data)
 
       return dispatch(attemptLogin(newUser))
     })

@@ -26,7 +26,7 @@ export default function SettingsMenu({ pathname }) {
           <Menu.ListItem>
             <Menu.Link
               onClick={() => dispatch(push('/settings/profile'))}
-              active={pathname.includes('profile') || pathname === '/settings' || pathname === '/settings/'}
+              // active={pathname.includes('profile') || pathname === '/settings' || pathname === '/settings/'}
             >
               Profile
             </Menu.Link>
@@ -47,6 +47,19 @@ export default function SettingsMenu({ pathname }) {
           <Menu.ListItem>
             <Menu.Link onClick={logout} onKeyPress={logout}>
               Logout
+            </Menu.Link>
+          </Menu.ListItem>
+        </Menu.List>
+        <Menu.Label>
+          Menu 
+        </Menu.Label>
+        <Menu.List>
+          <Menu.ListItem>
+            <Menu.Link
+              onClick={() => dispatch(push('/settings/menu'))}
+              active={pathname.includes('menu') || pathname === '/menu' || pathname === '/menu/'}
+            >
+              Add or Edit Menu
             </Menu.Link>
           </Menu.ListItem>
         </Menu.List>

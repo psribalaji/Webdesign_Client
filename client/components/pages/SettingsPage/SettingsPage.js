@@ -12,12 +12,15 @@ import Column from 'react-bulma-companion/lib/Column';
 
 import ProfileSettings from '_templates/ProfileSettings';
 import AccountSettings from '_templates/AccountSettings';
+import MenuSection from '../../templates/MenuSection';
+
 import SettingsMenu from '_organisms/SettingsMenu';
 
 export default function SettingsPage({ location }) {
   const dispatch = useDispatch();
   const { user } = useSelector(R.pick(['user']));
 
+  console.log('user' ,user);
   useEffect(() => {
     if (R.isEmpty(user)) {
       dispatch(push('/login'));
@@ -36,6 +39,8 @@ export default function SettingsPage({ location }) {
               <Switch>
                 <Route path="/settings/profile/" component={ProfileSettings} />
                 <Route path="/settings/account/" component={AccountSettings} />
+                <Route path="/settings/menu/" component={MenuSection} />
+
                 <Route path="*" component={ProfileSettings} />
               </Switch>
             </Column>

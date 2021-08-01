@@ -94,8 +94,10 @@ export default function GeneralProfile() {
 
   const charactersRemaining = 240 - bio.length;
   const edited = firstNameEdited || lastNameEdited || bioEdited || profilePicEdited;
-
+  console.log("Step 2")
   return (
+  
+
     <Box className="general-profile">
       <Icon size="medium" className="is-pulled-right" onClick={refresh} onKeyPress={refresh}>
         <FontAwesomeIcon icon={faSync} size="lg" />

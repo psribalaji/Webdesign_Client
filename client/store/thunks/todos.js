@@ -7,11 +7,12 @@ import { setTodos, addTodo, toggleCompleteTodo, updateTodo, removeTodo } from '_
 import { dispatchError } from '_utils/api';
 
 export const attemptGetTodos = () => dispatch =>
-  getTodos()
-    .then(data => {
-      const todos = R.map(todo =>
-        R.omit(['Id'], R.assoc('id', todo._id, snakeToCamelCase(todo))), data.todos);
+   getTodos()
+     .then(data => {
+      
 
+        const todos = R.map(todo =>
+        R.omit(['Id'], R.assoc('id', todo._id, snakeToCamelCase(todo))), data.todos);
       dispatch(setTodos(todos));
       return data.todos;
     })
