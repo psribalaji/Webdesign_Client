@@ -40,6 +40,7 @@ export default function SettingsPage({ location }) {
                 <Route path="/settings/profile/" component={ProfileSettings} />
                 <Route path="/settings/account/" component={AccountSettings} />
                 <Route path="/settings/menu/" component={MenuSection} />
+                <Route path="/menuList/" component={ProfileSettings} />
 
                 <Route path="*" component={ProfileSettings} />
               </Switch>

@@ -1,28 +1,153 @@
-import React, { useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { push } from 'connected-react-router'
-import R from 'ramda'
-import SearchBar from 'material-ui-search-bar'
-import home from '../../../styles/home.scss'
-import Section from 'react-bulma-companion/lib/Section'
-import Container from 'react-bulma-companion/lib/Container'
-import Title from 'react-bulma-companion/lib/Title'
+import React, { useState, useEffect } from 'react';
+import AddTodo from '_molecules/AddTodo';
+import TodoList from '_organisms/TodoList';
+import { useDispatch, useSelector } from 'react-redux';
+
+import Section from 'react-bulma-companion/lib/Section';
+import Title from 'react-bulma-companion/lib/Title';
+import Columns from 'react-bulma-companion/lib/Columns';
+import Column from 'react-bulma-companion/lib/Column';
+import styled from 'styled-components';
+import { makeStyles } from '@material-ui/core/styles';
+import Card from '@material-ui/core/Card';
+import CardActionArea from '@material-ui/core/CardActionArea';
+import CardActions from '@material-ui/core/CardActions';
+import CardContent from '@material-ui/core/CardContent';
+import CardMedia from '@material-ui/core/CardMedia';
+import Button from '@material-ui/core/Button';
+import Typography from '@material-ui/core/Typography';
+import img from "../../../assets/images/restaurant.jpeg"
+import axios from 'axios'
+import Grid from "@material-ui/core/Grid";
+import SearchBar from "material-ui-search-bar";
+
+import { push } from 'connected-react-router';
+
+const apiURL = process.env.API_URL || ''
+
+const useStyles = makeStyles({
+  root: {
+    maxWidth: 345,
+  },
+  media: {
+    height: 300,
+  },
+});
+
+const api = axios.create({
+  baseURL: apiURL
+})
 
 export default function HomePage() {
-  const dispatch = useDispatch()
-  const { user } = useSelector(R.pick(['user']))
 
-  useEffect(() => {
-    if (R.isEmpty(user)) {
-      dispatch(push('/login'))
-    }
-  }, [])
+  const dispatch = useDispatch();
 
-  return (
-    <div className='home-page page'>
-      <>
-        <img src='https://i.ibb.co/wzX4mzm/food-name.jpg' className='photo' />
-      </>
-    </div>
-  )
+  function getMenu(e){
+    // this.sortOn(e.currentTarget.getAttribute('data-column'));
+    console.log("KEY ", e)
+    localStorage.setItem('id', e);
+    dispatch(push(`/menuList/${e}`));
+
 }
+  const [restaurants, setRestaurants] = useState([{}]); 
+  const [searched, setSearched] = "";
+
+
+  //for error handling
+  const [iserror, setIserror] = useState(false)
+  const [errorMessages, setErrorMessages] = useState([])
+  useEffect(() => {
+  console.log("useEffect called");
+  const getRestaurants = async () => {
+    try {
+      const res = await axios.get(
+        `http://localhost:3000/api/res/getRestaurants`,
+      );
+      console.log("response", res)
+      setRestaurants(res.data.restaurants);
+
+    } catch (e) {
+      console.log(e);
+    }
+  };
+  getRestaurants();
+}, []);
+
+
+
+
+
+
+  console.log("resss ", restaurants)
+  console.log("res  ", restaurants.length)
+  console.log("res id ", restaurants[0]._id)
+
+  const handleSearch = (searchedVal) => {
+      console.log(searchedVal)
+    // const filtered =data.filter(entry => Object.values(entry).some(val => typeof val === "string" && val.includes(searchedVal)))};
+
+    //setRows(filteredRows);
+  };
+  return (
+
+   
+    
+  <div>
+  <SearchBar
+      value = {searched}
+      onChange={(searchVal) => handleSearch(searchVal)}
+      onRequestSearch={handleSearch}
+      style={{
+          margin: '0 auto',
+          maxWidth: 800
+      }}
+      />
+      <br>
+      </br>
+       
+{ restaurants.length >1 && restaurants.map((elem) => (
+
+  <Grid
+       container
+       spacing={2}
+       direction="row"
+       justify="flex-start"
+       alignItems="flex-start"
+     >
+      {console.log("ELE ",elem)}
+      {console.log("Index of elem ",elem._id)}
+
+    <Grid item xs={3} key={elem._id}>
+
+        <Card >
+        <CardActionArea onClick={() =>getMenu(elem._id) }>
+          <CardMedia
+            component="img"
+            alt="Restaurant Name"
+            height="400"
+            width="500"
+            image={img}
+            title="Restaurant Name"
+          />
+          <CardContent>
+            <Typography gutterBottom variant="h5" component="h2">
+              {elem.restaurantName}
+            </Typography>
+            <Typography variant="body2" color="textSecondary" component="p">
+                  {elem.location}
+            </Typography>
+          </CardContent>
+        </CardActionArea>
+
+      </Card>
+    </Grid>
+
+
+  </Grid>
+))} 
+</div>
+  );
+};
+    
+  
+

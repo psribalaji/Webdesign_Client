@@ -23,6 +23,10 @@ export default function Navigation({ pathname }) {
     setAuth(!R.isEmpty(user));
   }, [user.username]);
 
+  console.log('USer **' ,user)
+  console.log('USer ROle' ,user.role)
+  // console.log('USer **' ,user)
+
   const toggleDropdown = () => setOpen(!open);
 
   const closeDropdown = () => setOpen(false);
@@ -43,13 +47,15 @@ export default function Navigation({ pathname }) {
     <Navbar fixed="top" shadow>
       <Container>
         <Navbar.Brand>
+        
           <Navbar.Item
             onClick={() => dispatch(push(auth ? '/home' : '/'))}
             aria-label="main navigation"
             link
           >
+          
             <Title className="logo" size="3">
-              MERN Boilerplate
+              Food Delivery App
             </Title>
           </Navbar.Item>
           <div className="navbar-brand-right">
@@ -94,8 +100,10 @@ export default function Navigation({ pathname }) {
         </Navbar.Brand>
 
         {auth ? (
+        
           <Navbar.Menu>
             <Navbar.Start>
+            {user.role =="user" && (
               <Navbar.Item
                 className="is-hidden-mobile"
                 onClick={() => dispatch(push('/home'))}
@@ -105,7 +113,9 @@ export default function Navigation({ pathname }) {
               >
                 <Title size="6">Home</Title>
               </Navbar.Item>
-              <Navbar.Item
+            )}
+
+              {/* <Navbar.Item
                 className="is-hidden-mobile"
                 onClick={() => dispatch(push('/todo'))}
                 active={isTodo}
@@ -115,7 +125,8 @@ export default function Navigation({ pathname }) {
                 <Title size="6">
                   Todo
                 </Title>
-              </Navbar.Item>
+              </Navbar.Item> */}
+             {user.role == undefined && (
               <Navbar.Item
                 className="is-hidden-mobile"
                 onClick={() => dispatch(push('/settings'))}
@@ -127,6 +138,7 @@ export default function Navigation({ pathname }) {
                   Settings
                 </Title>
               </Navbar.Item>
+             )}
             </Navbar.Start>
             <Navbar.End>
               <Navbar.Item onClick={toggleDropdown} onKeyPress={toggleDropdown} hoverable link>

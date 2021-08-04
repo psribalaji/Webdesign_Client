@@ -15,7 +15,7 @@ import TodoPage from '_pages/TodoPage';
 import SettingsPage from '_pages/SettingsPage';
 import LostPage from '_pages/LostPage';
 import RegisterRestaurantPage from '../../pages/RegisterRestaurantPage';
-
+import MenuListPage from '../../pages/MenuListPage'
 
 import Navigation from '_organisms/Navigation';
 import Footer from '_organisms/Footer';
@@ -51,6 +51,7 @@ export default function Main({ location }) {
           <Route path="/todo" component={TodoPage} />
           <Route path="/settings" component={SettingsPage} />
           <Route path="/restaurant" component={RegisterRestaurantPage} />
+          <Route path="/menuList/:id" component={MenuListPage} />
 
           <Route path="*" component={LostPage} />
         </Switch>
