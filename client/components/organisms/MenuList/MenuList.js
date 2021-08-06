@@ -27,6 +27,7 @@ let productList = [{}];
         
         qty: parseInt(this.state.qty) + 1
       });
+      console.log("This", this)
       console.log("add ",this.state.qty)
       this.props.handleTotal(this.props.price);
     }
@@ -124,8 +125,15 @@ let productList = [{}];
       this.createProduct = this.createProduct.bind(this);
       this.calculateTotal = this.calculateTotal.bind(this);
       this.showProduct = this.showProduct.bind(this);
+      this.order = this.calculateTotal.bind(this);
+
     }
   
+
+    order() {
+      //this.props.handleShow(this.props.info);
+      console.log("Order calleld ", this)
+    }
     componentDidMount() {
         
     //   setTimeout(() => {
@@ -164,6 +172,8 @@ let productList = [{}];
       this.setState({
         total: parseInt(this.state.total) + parseInt(price)
       });
+      console.log("TTTT ",this);
+
       console.log("Total ",this.state.total);
     }
   
@@ -194,7 +204,7 @@ let productList = [{}];
           <Total total={this.state.total} />
           <br>
           </br>
-          <Button variant="primary">Order Now</Button>{' '}
+          <Button variant="primary" onClick={this.order} >Order Now </Button>{}
 
         </div>
       );
