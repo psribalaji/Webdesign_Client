@@ -175,7 +175,7 @@ export default function RestaurantOrders() {
           </TableRow>
         </TableHead>
         <TableBody>
-          { order.length > 1 && 
+          { order.length > 0 && 
           order.map((row) => (
             <Row key={row._id} row={row} flag={flag} setFlag={setFlag}/>
           ))}

@@ -198,7 +198,7 @@ class MenuList extends React.Component {
           this.setState({
             isLoaded: true,
             productList: result.restaurants[0].menu,
-            //  address: result.restaurants[0].aresdd
+            address: result.restaurants[0].address
           })
         },
         // Note: it's important to handle errors here
@@ -272,7 +272,7 @@ class MenuList extends React.Component {
             <Button variant='primary' onClick={this.order}>Order Now</Button>{' '}
           </Col>
           <Col>
-            <GoogleMap1 />
+            <GoogleMap1 address={this.state.address} />
           </Col>
         </Row>
       </div>

@@ -7,59 +7,69 @@ import Marker from './Marker';
 class GoogleMap1 extends Component {
 
   
-  static defaultProps = {
+  // static defaultProps = {
     
-    center: {
-      lat: 12.31,
-      lng: 12.31
-    },
-    zoom: 11
-  };
 
-  // componentDidMount() {
-  //   //   setTimeout(() => {
-  //   //     this.setState({ productList: productList });
-  //   //   }, 1000);
-  //   fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${this.props.address}&key=AIzaSyDOlTzWL8Eo2ijHa--q9edXVPIwU19GQys`)
-  //     .then((res) => res.json())
-  //     .then(
-  //       (result) => {
-  //         console.log('Rss ', result)
-  //         this.setState({
-  //           // isLoaded: true,
+  //   center: {
+  //     lat: this.state.lat,
+  //     lng: 12.31
+  //   },
+  //   zoom: 11
+  // };
+  constructor(props) {
+    super(props)
+    // const { id } = this.props.params;
+    //console.log("IDD ",match.params.id)
 
-  //         })
-  //       },
-  //       // Note: it's important to handle errors here
-  //       // instead of a catch() block so that we don't swallow
-  //       // exceptions from actual bugs in components.
-  //       (error) => {
-  //         this.setState({
-  //           // isLoaded: true,
-  //           // error,
-  //         })
-  //       }
-  //     )
-  // }
+    this.state = {
+     lat: 0.0,
+     lng:0.0,
+     
+    }
+  }
+  componentDidMount() {
+    //   setTimeout(() => {
+    //     this.setState({ productList: productList });
+    //   }, 1000);
+    console.log("Address ", this)
+    fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${this.props.address}&key=AIzaSyDOlTzWL8Eo2ijHa--q9edXVPIwU19GQys`)
+      .then((res) => res.json())
+      .then(
+        (result) => {
+          console.log('Address lat and Lng ', result.results[0].geometry.location.lat)
+           this.setState({
+            lat : result.results[0].geometry.location.lat,
+            lng : result.results[0].geometry.location.lng
+
+          })
+        },
+     
+        (error) => {
+         console.log("Error occured while retriving lat and lng")
+        }
+      )
+  }
 
 
   render() {
     return (
       // Important! Always set the container height explicitly
       <div style={{ height: '100vh', width: '100%' }}>
-{       console.log("&&& ",this)}
+{       console.log("&&& ",this.state) }
+     {this.state.lat != 0.0 &&  (
         <GoogleMapReact
           bootstrapURLKeys={{ key: "AIzaSyDOlTzWL8Eo2ijHa--q9edXVPIwU19GQys" }}
-          defaultCenter={this.props.center}
-          defaultZoom={this.props.zoom}
+          defaultCenter={this.state}
+          defaultZoom={11}
         >
           <Marker
-            lat={this.lat}
-            lng={this.lng}
+            lat={this.state.lat}
+            lng={this.state.lng}
             name="Restaurant Location"
             color="blue"
           />
         </GoogleMapReact>
+        )}
       </div>
     );
   }
