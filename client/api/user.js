@@ -21,4 +21,11 @@ export const putUserPassword = passwordInfo =>
     .withCredentials()
     .send(passwordInfo)
     .then(handleSuccess)
-    .catch(handleError);
+    .catch(handleError); 
+
+    export const putRestaurantInfo = info =>
+
+    request.put(`${apiURL}/api/res/restaurantInfo`)
+      .send(info)
+      .then(handleSuccess)
+      .catch(handleError);

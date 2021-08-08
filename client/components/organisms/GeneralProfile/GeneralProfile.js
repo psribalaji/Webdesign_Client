@@ -18,9 +18,11 @@ import Textarea from 'react-bulma-companion/lib/Textarea';
 import Label from 'react-bulma-companion/lib/Label';
 import Help from 'react-bulma-companion/lib/Help';
 import Input from 'react-bulma-companion/lib/Input';
+import axios from 'axios'
 
 import { validateName } from '_utils/validation';
-import { attemptGetUser, attemptUpdateUser } from '_thunks/user';
+import { attemptGetUser, attemptUpdateUser, attemptUpdateRestaurantInfo } from '_thunks/user';
+
 
 export default function GeneralProfile() {
   const dispatch = useDispatch();
@@ -34,21 +36,44 @@ export default function GeneralProfile() {
   const [lastNameEdited, setLastNameEdited] = useState(false);
   const [bioEdited, setBioEdited] = useState(false);
   const [profilePicEdited, setProfilePicEdited] = useState(false);
+  const [restaurantName, setResName] = useState("");
+  const [location, setResLocation] = useState("");
+  const [address, setResAddress] = useState("");
+  const [pincode, setResZipCode] = useState("");
+  const [resNameEdited, setResNameEdited] = useState(false);
+  const [resLocationEdited, setResLocationEdited] = useState(false);
+  const [resAddressEdited, setResAddressEdited] = useState(false);
+  const [resZipCodeEdited, setResZipCodeEdited] = useState(false);
 
   const resetState = () => {
-    setFirstName(user.firstName || '');
-    setLastName(user.lastName || '');
-    setBio(user.bio || '');
-    setProfilePic(user.profilePic || '');
-    setFirstNameEdited(false);
-    setLastNameEdited(false);
-    setBioEdited(false);
-    setProfilePicEdited(false);
+    setResNameEdited('');
+    setResLocationEdited('');
+    setResAddressEdited('');
+    setResZipCodeEdited('');
   };
 
+  
   useEffect(() => {
-    resetState();
-  }, [user.firstName, user.lastName, user.bio, user.profilePic]);
+    console.log("useEffect called!");
+    const getRestaurantsInfo = async () => {
+      try {
+        const res = await axios.get(
+          "http://localhost:8080/api/res/getRestaurantInfo/"+user.restaurantID,
+        ).then(res => {
+        console.log("response", res)
+        setResName(res.data.restaurants[0].restaurantName);
+        setResLocation(res.data.restaurants[0].location);
+        setResAddress(res.data.restaurants[0].address);
+        setResZipCode(res.data.restaurants[0].pincode);
+        console.log("Name ",res.data.restaurants[0].restaurantName);
+        })
+      } catch (e) { 
+        console.log(e);
+      }
+    };
+    getRestaurantsInfo();
+  }, []);
+
 
   const updateFirstName = e => {
     if (validateName(e.target.value)) {
@@ -57,16 +82,26 @@ export default function GeneralProfile() {
     }
   };
 
-  const updateLastName = e => {
-    if (validateName(e.target.value)) {
-      setLastName(e.target.value);
-      setLastNameEdited(true);
+  const updateRestaurantName = e => {
+    if(validateName(e.target.value)){
+      setResName(e.target.value);
+      setResNameEdited(true);
     }
   };
 
-  const updateBio = e => {
-    setBio(e.target.value);
-    setBioEdited(true);
+  const updateRestaurantAddress = e => {
+    setResAddress(e.target.value);
+    setResAddressEdited(true);
+  };
+
+  const updateRestaurantZipCode = e => {
+    setResZipCode(e.target.value);
+    setResZipCodeEdited(true);
+  };
+
+  const updateRestaurantState = e => {
+    setResLocation(e.target.value);
+    setResLocationEdited(true);
   };
 
   const updateProfilePic = e => {
@@ -81,19 +116,19 @@ export default function GeneralProfile() {
   const save = () => {
     const updatedUser = {};
 
-    if (firstNameEdited) { updatedUser.first_name = firstName; }
-    if (lastNameEdited) { updatedUser.last_name = lastName; }
-    if (profilePicEdited) { updatedUser.profile_pic = profilePic; }
-    if (bioEdited) { updatedUser.bio = bio; }
+    if (resNameEdited) { updatedUser.restaurantName = restaurantName; }
+    if (resAddressEdited) { updatedUser.address = address; }
+    if (resZipCodeEdited) { updatedUser.pincode = pincode; }
+    if (resLocationEdited) { updatedUser.location = location; }
 
     if (!R.isEmpty(updatedUser)) {
-      dispatch(attemptUpdateUser(updatedUser))
+      dispatch(attemptUpdateRestaurantInfo(updatedUser))
         .catch(R.identity);
     }
   };
 
   const charactersRemaining = 240 - bio.length;
-  const edited = firstNameEdited || lastNameEdited || bioEdited || profilePicEdited;
+  const edited = resNameEdited || resAddressEdited || resZipCodeEdited || resLocationEdited;
   console.log("Step 2")
   return (
   
@@ -103,11 +138,11 @@ export default function GeneralProfile() {
         <FontAwesomeIcon icon={faSync} size="lg" />
       </Icon>
       <Title size="3">
-        General
+        Restaurant Information
       </Title>
       <hr className="separator" />
       <Columns>
-        <Column size="4">
+        <Column size="6">
           <Title size="3" className="has-text-centered">
             {user.usernameCase}
           </Title>
@@ -126,7 +161,7 @@ export default function GeneralProfile() {
               <Input
                 id="profile-pic-url"
                 placeholder="Picture URL"
-                value={profilePic}
+                value={""}
                 onChange={updateProfilePic}
               />
             </Control>
@@ -137,51 +172,72 @@ export default function GeneralProfile() {
             <Column size="6">
               <Field>
                 <Label htmlFor="first-name" className="Label">
-                  First Name
+                  Restaurant Name
                 </Label>
                 <Control>
                   <Input
                     id="first-name"
                     placeholder="First Name"
-                    value={firstName}
-                    onChange={updateFirstName}
+                    value={restaurantName}
+                    onChange={updateRestaurantName}
                   />
                 </Control>
               </Field>
             </Column>
-            <Column size="6">
-              <Field>
-                <Label htmlFor="last-name">
-                  Last Name
-                </Label>
-                <Control>
-                  <Input
-                    id="last-name"
-                    placeholder="Last Name"
-                    value={lastName}
-                    onChange={updateLastName}
-                  />
-                </Control>
-              </Field>
-            </Column>
-          </Columns>
+            </Columns>
+          <Columns>
+          <Column size="6">
           <Field>
             <Label htmlFor="bio">
-              Bio
+              Restaurant Address
             </Label>
             <Control>
-              <Textarea
+              <Input
                 id="bio"
-                placeholder="Tell us about yourself."
-                value={bio}
+                placeholder="Address"
+                value={address}
                 maxLength={240}
-                onChange={updateBio}
+                onChange={updateRestaurantAddress}
               />
             </Control>
             <Help>
               {`Characters remaining: ${charactersRemaining}`}
             </Help>
           </Field>
+          </Column>
+          </Columns>
+          <Columns>
+            <Column size="3">
+              <Field>
+                <Label htmlFor="last-name">
+                  State
+                </Label>
+                <Control>
+                  <Input
+                    id="last-name"
+                    placeholder="Last Name"
+                    value={location}
+                    onChange={updateRestaurantState}
+                  />
+                </Control>
+              </Field>
+            </Column>
+            <Column size="2">
+              <Field>
+                <Label htmlFor="zip-code">
+                  Zip Code
+                </Label>
+                <Control>
+                  <Input
+                    id="zip-code"
+                    placeholder="zip code"
+                    value={pincode}
+                    onChange={updateRestaurantZipCode}
+                  />
+                </Control>
+              </Field>
+            </Column>
+            </Columns>
         </Column>
       </Columns>
       <hr className="separator" />
