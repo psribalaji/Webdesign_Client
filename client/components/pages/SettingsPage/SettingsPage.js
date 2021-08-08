@@ -15,6 +15,7 @@ import AccountSettings from '_templates/AccountSettings';
 import MenuSection from '../../templates/MenuSection';
 
 import SettingsMenu from '_organisms/SettingsMenu';
+import RestaurantOrders from '../RestaurantOrders';
 
 export default function SettingsPage({ location }) {
   const dispatch = useDispatch();
@@ -41,6 +42,7 @@ export default function SettingsPage({ location }) {
                 <Route path="/settings/account/" component={AccountSettings} />
                 <Route path="/settings/menu/" component={MenuSection} />
                 <Route path="/menuList/" component={ProfileSettings} />
+                <Route path="/settings/orders" component={RestaurantOrders} />
 
                 <Route path="*" component={ProfileSettings} />
               </Switch>

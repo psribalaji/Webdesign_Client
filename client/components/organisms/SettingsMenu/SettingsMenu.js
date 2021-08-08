@@ -63,6 +63,19 @@ export default function SettingsMenu({ pathname }) {
             </Menu.Link>
           </Menu.ListItem>
         </Menu.List>
+        <Menu.Label>
+          Orders 
+        </Menu.Label>
+        <Menu.List>
+          <Menu.ListItem>
+            <Menu.Link
+              onClick={() => dispatch(push('/settings/orders'))}
+              active={pathname.includes('orders') || pathname === '/orders' || pathname === '/orders/'}
+            >
+              Manage Orders
+            </Menu.Link>
+          </Menu.ListItem>
+        </Menu.List>
       </Menu>
     </Box>
   );

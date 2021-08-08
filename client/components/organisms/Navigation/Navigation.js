@@ -113,8 +113,19 @@ export default function Navigation({ pathname }) {
               >
                 <Title size="6">Home</Title>
               </Navbar.Item>
-            )}
 
+
+
+            )}
+            <Navbar.Item
+                className="is-hidden-mobile"
+                onClick={() => dispatch(push('/myOrders/:id'))}
+                active={isHome}
+                tab
+                link
+              >
+                <Title size="6">My Orders</Title>
+              </Navbar.Item>
               {/* <Navbar.Item
                 className="is-hidden-mobile"
                 onClick={() => dispatch(push('/todo'))}
@@ -135,7 +146,7 @@ export default function Navigation({ pathname }) {
                 link
               >
                 <Title size="6">
-                  Settings
+                  Dashboard
                 </Title>
               </Navbar.Item>
              )}

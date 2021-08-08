@@ -32,7 +32,10 @@ const center = {
   lng: -38.523,
 }
 
+function test(){
 
+  console.log("Test cakked")
+}
 function MyComponent() {
   const { isLoaded } = useJsApiLoader({
     id: 'google-map-script',
@@ -283,9 +286,11 @@ class MenuList extends React.Component {
     alert(info)
   }
   order(t){
+     const history = useHistory();
 
     console.log("order called")
     // console.log('mm **', menu)
+    console.log('Tot **', this)
 
     let orderDetails = {
       user_id: localStorage.getItem('uid'),
@@ -298,11 +303,19 @@ class MenuList extends React.Component {
     console.log('mm rrr', orderDetails)
     axios.post('http://localhost:3000/api/order/saveOrder', orderDetails)
         .then(response => 
-          alert("Successfully Ordered")
-       
+           //console.log("res ",response)
+         //history.push("/myOrders")
+         //browserHistory.push('/myOrders')
+         test()
       
 );
 
+// routingFunction = (param) => {
+//   this.props.history.push({
+//       pathname: `/target-path`,
+//       state: param
+//   });
+// }
   }
   
   render() {
