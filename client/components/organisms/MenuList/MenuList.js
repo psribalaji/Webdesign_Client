@@ -3,20 +3,15 @@ import { useHistory ,Link, useParams } from 'react-router-dom'
 import R, { identity } from 'ramda'
 import './App.scss'
 import axios from 'axios'
-
-import { GoogleMap, useJsApiLoader } from '@react-google-maps/api'
 import 'bootstrap/dist/css/bootstrap.min.css'
-import { browserHistory , withRouter } from 'react-router'
 import Button from 'react-bulma-companion/lib/Button'
 import { Col, Row } from 'react-bootstrap'
-import { push } from 'react-router-redux';
-import { Redirect } from 'react-router'
-import MyOrders  from '../../pages/MyOrders';
+import GoogleMap1 from './GoogleMap1'
+
 
 // const dispatch = useDispatch()
 let productList = [{}]
 let menu =[]
-let total1 =0
 
 const { user } = R.pick(['user'])
 console.log("UU ", user)
@@ -27,44 +22,6 @@ const containerStyle = {
   height: '250px',
 }
 
-const center = {
-  lat: -3.745,
-  lng: -38.523,
-}
-
-
-function MyComponent() {
-  const { isLoaded } = useJsApiLoader({
-    id: 'google-map-script',
-    googleMapsApiKey: 'AIzaSyCVC0lORAnjYEPClZpa5vB19IGbwRbkdxg',
-  })
-  const [map, setMap] = React.useState(null)
-
-  const onLoad = React.useCallback(function callback(map) {
-    const bounds = new window.google.maps.LatLngBounds()
-    map.fitBounds(bounds)
-    setMap(map)
-  }, [])
-
-  const onUnmount = React.useCallback(function callback(map) {
-    setMap(null)
-  }, [])
-
-  return isLoaded ? (
-    <GoogleMap
-      mapContainerStyle={containerStyle}
-      center={center}
-      zoom={10}
-      onLoad={onLoad}
-      onUnmount={onUnmount}
-    >
-      {/* Child components, such as markers, info windows, etc. */}
-      <></>
-    </GoogleMap>
-  ) : (
-    <></>
-  )
-}
 /* Product */
 class Product extends React.Component {
   constructor(props) {
@@ -148,12 +105,7 @@ class Product extends React.Component {
           </div>
           <div className='row btn-toolbar'>
             <div className='col-6'>
-              <button
-                className='btn btn-outline-primary'
-                onClick={this.showInfo}
-              >
-                show More
-              </button>
+         
             </div>
             <div className='col-6 text-right'>
               <button className='btn btn-outline-primary' onClick={this.add}>
@@ -226,12 +178,11 @@ class MenuList extends React.Component {
     this.state = {
       total: 0,
       productList: '',
+      address: ''
       // id : this.props.match.params.id
     }
     console.log('ID ', localStorage.getItem('id'))
-    this.createProduct = this.createProduct.bind(this)
     this.calculateTotal = this.calculateTotal.bind(this)
-    this.showProduct = this.showProduct.bind(this)
     this.order = this.order.bind(this)
   }
 
@@ -243,10 +194,11 @@ class MenuList extends React.Component {
       .then((res) => res.json())
       .then(
         (result) => {
-          console.log('Rss ', result.restaurants[0].menu)
+          console.log('Rss ', result.restaurants[0])
           this.setState({
             isLoaded: true,
             productList: result.restaurants[0].menu,
+            //  address: result.restaurants[0].aresdd
           })
         },
         // Note: it's important to handle errors here
@@ -261,16 +213,6 @@ class MenuList extends React.Component {
       )
   }
 
-  componentDidUpdate(prevProps) {
-    console.log("Prev props",prevProps)
- }
-
-  createProduct(product) {
-    this.setState({
-      products: this.state.productList.push(product),
-    })
-  }
-
   calculateTotal(price) {
     this.setState({
       total: parseInt(this.state.total) + parseInt(price),
@@ -278,10 +220,6 @@ class MenuList extends React.Component {
     console.log('Total ', this.state.total)
   }
 
-  showProduct(info) {
-    console.log(info)
-    alert(info)
-  }
   order(t){
 
     console.log("order called")
@@ -315,8 +253,8 @@ class MenuList extends React.Component {
           <Product
             name={product.itemName}
             price={product.price}
-            info={product.info}
-            handleShow={component.showProduct}
+            // info={product.info}
+            // handleShow={component.showProduct}
             handleTotal={component.calculateTotal}
           />
         </div>
@@ -334,7 +272,7 @@ class MenuList extends React.Component {
             <Button variant='primary' onClick={this.order}>Order Now</Button>{' '}
           </Col>
           <Col>
-            <MyComponent />
+            <GoogleMap1 />
           </Col>
         </Row>
       </div>
