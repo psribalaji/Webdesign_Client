@@ -7,7 +7,9 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import Button from 'react-bulma-companion/lib/Button'
 import { Col, Row } from 'react-bootstrap'
 import GoogleMap1 from './GoogleMap1'
+const PayPalButton = paypal.Buttons.driver("react", { React, ReactDOM });
 
+import ReactDOM from "react-dom"
 
 // const dispatch = useDispatch()
 let productList = [{}]
@@ -34,7 +36,7 @@ class Product extends React.Component {
     this.subtract = this.subtract.bind(this)
     this.showInfo = this.showInfo.bind(this)
   }
-
+  
   add() {
     this.setState({
       qty: parseInt(this.state.qty) + 1,
@@ -91,7 +93,10 @@ class Product extends React.Component {
     this.props.handleShow(this.props.info)
   }
 
+
+
   render() {
+    
     return (
       <Row>
         <Col>
@@ -118,6 +123,7 @@ class Product extends React.Component {
               >
                 -1
               </button>
+             
             </div>
           </div>
           <hr />
@@ -178,12 +184,15 @@ class MenuList extends React.Component {
     this.state = {
       total: 0,
       productList: '',
-      address: ''
+      address: '',
       // id : this.props.match.params.id
-    }
+      
+  }
+
     console.log('ID ', localStorage.getItem('id'))
     this.calculateTotal = this.calculateTotal.bind(this)
     this.order = this.order.bind(this)
+
   }
 
   componentDidMount() {
@@ -216,7 +225,9 @@ class MenuList extends React.Component {
   calculateTotal(price) {
     this.setState({
       total: parseInt(this.state.total) + parseInt(price),
+
     })
+
     console.log('Total ', this.state.total)
   }
 
@@ -237,15 +248,34 @@ class MenuList extends React.Component {
     axios.post('http://localhost:3000/api/order/saveOrder', orderDetails)
         .then(response => 
           alert("Successfully Ordered")
-       
-      
-);
+    );
 
   }
+
+createOrder(data, actions) {
+  return actions.order.create({
+    purchase_units: [
+      {
+        amount: {
+          value: this.state.total * 1.05,
+        },
+      },
+    ],
+  });
+}
+
+onApprove(data, actions) {
+  return actions.order.capture();
+}
+
+  
   
   render() {
+    
     if (!this.state.productList) return <p>loading menu ...!!!!</p>
     console.log('Pp ', productList)
+    console.log('Paypal ', this.state.initialOptions)
+
     var component = this
     var products = this.state.productList.map(function (product) {
       return (
@@ -270,6 +300,11 @@ class MenuList extends React.Component {
             <Total total={this.state.total} />
             <br></br>
             <Button variant='primary' onClick={this.order}>Order Now</Button>{' '}
+            
+            <PayPalButton
+                createOrder={(data, actions) => this.createOrder(data, actions)}
+                onApprove={(data, actions) => this.onApprove(data, actions)}
+            />
           </Col>
           <Col>
             <GoogleMap1 address={this.state.address} />
