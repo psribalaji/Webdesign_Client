@@ -28,14 +28,8 @@ export default function GeneralProfile() {
   const dispatch = useDispatch();
   const { user } = useSelector(R.pick(['user']));
 
-  const [firstName, setFirstName] = useState(user.firstName || '');
-  const [lastName, setLastName] = useState(user.lastName || '');
   const [bio, setBio] = useState(user.bio || '');
   const [profilePic, setProfilePic] = useState(user.profilePic || '');
-  const [firstNameEdited, setFirstNameEdited] = useState(false);
-  const [lastNameEdited, setLastNameEdited] = useState(false);
-  const [bioEdited, setBioEdited] = useState(false);
-  const [profilePicEdited, setProfilePicEdited] = useState(false);
   const [restaurantName, setResName] = useState("");
   const [location, setResLocation] = useState("");
   const [address, setResAddress] = useState("");
@@ -44,12 +38,14 @@ export default function GeneralProfile() {
   const [resLocationEdited, setResLocationEdited] = useState(false);
   const [resAddressEdited, setResAddressEdited] = useState(false);
   const [resZipCodeEdited, setResZipCodeEdited] = useState(false);
+  const [resProfilePicEdited, setResProfilePicEdited] = useState(false);
 
   const resetState = () => {
     setResNameEdited('');
     setResLocationEdited('');
     setResAddressEdited('');
     setResZipCodeEdited('');
+    setResProfilePicEdited('');
   };
 
   
@@ -65,6 +61,7 @@ export default function GeneralProfile() {
         setResLocation(res.data.restaurants[0].location);
         setResAddress(res.data.restaurants[0].address);
         setResZipCode(res.data.restaurants[0].pincode);
+        setProfilePic(res.data.restaurants[0].profilePic);
         console.log("Name ",res.data.restaurants[0].restaurantName);
         })
       } catch (e) { 
@@ -210,7 +207,7 @@ export default function GeneralProfile() {
             <Column size="3">
               <Field>
                 <Label htmlFor="last-name">
-                  State
+                  City
                 </Label>
                 <Control>
                   <Input
