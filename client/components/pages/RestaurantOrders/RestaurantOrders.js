@@ -17,6 +17,8 @@ import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 import axios from 'axios'
 import Button from '@material-ui/core/Button';
 import { faFlagUsa } from '@fortawesome/free-solid-svg-icons';
+import { useDispatch, useSelector } from 'react-redux'
+import R from 'ramda'
 
 const useRowStyles = makeStyles({
   root: {
@@ -25,7 +27,6 @@ const useRowStyles = makeStyles({
     },
   },
 });
-
 
 
 function Row(props) {
@@ -139,7 +140,11 @@ const handleReject = id => {
 }
 
 export default function RestaurantOrders() {
-  const [order,setOrders ] = useState([{}])
+  
+const { user } = useSelector(R.pick(['user']));
+
+console.log('userRRr' ,user);
+  const [order,setOrders ] = useState()
 
   const [flag, setFlag] = useState(false)
   
@@ -149,7 +154,7 @@ export default function RestaurantOrders() {
     const getOrders = async () => {
       try {
         const res = await axios.get(
-          `http://localhost:3000/api/order/restaurantOrderDetails/${localStorage.getItem('id')}`
+          `http://localhost:3000/api/order/restaurantOrderDetails/${user.restaurantID}`
         )
         console.log('response', res)
         setOrders(res.data.orders)
@@ -175,10 +180,10 @@ export default function RestaurantOrders() {
           </TableRow>
         </TableHead>
         <TableBody>
-          { order.length > 0 && 
+          { order!=undefined  &&( 
           order.map((row) => (
             <Row key={row._id} row={row} flag={flag} setFlag={setFlag}/>
-          ))}
+          )))}
         </TableBody>
       </Table>
     </TableContainer>

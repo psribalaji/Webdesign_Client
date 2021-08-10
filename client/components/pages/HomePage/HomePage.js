@@ -155,7 +155,7 @@ export default function HomePage() {
                       component='img'
                       alt='Restaurant Name'
                       className={classes.image1}
-                      image={img}
+                      image= {elem.profilePic}
                       title='Restaurant Name'
                     />
                     <CardContent

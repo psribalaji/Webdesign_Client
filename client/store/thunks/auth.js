@@ -80,8 +80,9 @@ export const attemptLogout = () => (dispatch) =>
 export const attemptRestuarantRegister = (newUser) => (dispatch) =>
   postRestuarantRegister(newUser)
     .then((data) => {
+      console.log("nu ",newUser)
       RNC.addNotification({
-        title: 'Success!',
+        title: 'Success! Now Login to Continue',
         message: data.message,
         type: 'success',
         container: 'top-right',
@@ -92,8 +93,8 @@ export const attemptRestuarantRegister = (newUser) => (dispatch) =>
         },
       })
       console.log("Log ", data)
-
-      return dispatch(attemptLogin(newUser))
+      // localStorage.setItem("id", data.users[0].restaurantID._id)
+      // return dispatch(attemptLogin(newUser))
     })
-    .then(() => dispatch(push('/settings')))
+    .then(() => dispatch(push('/login')))
     .catch(dispatchError(dispatch))

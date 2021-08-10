@@ -23,6 +23,7 @@ export const postLogout = () =>
   request
     .post(`${apiURL}/api/auth/logout`)
     .withCredentials()
+    
     .then(handleSuccess)
     .catch(handleError)
 

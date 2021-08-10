@@ -5,6 +5,8 @@ import R from 'ramda'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCheck } from '@fortawesome/free-solid-svg-icons/faCheck'
+import { faUpload } from '@fortawesome/free-solid-svg-icons/faUpload'
+
 import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons/faExclamationTriangle'
 
 import Box from 'react-bulma-companion/lib/Box'
@@ -16,6 +18,7 @@ import Icon from 'react-bulma-companion/lib/Icon'
 import Input from 'react-bulma-companion/lib/Input'
 import Label from 'react-bulma-companion/lib/Label'
 import Help from 'react-bulma-companion/lib/Help'
+import File from 'react-bulma-companion/lib/File'
 
 import useKeyPress from '_hooks/useKeyPress'
 import { postCheckUsername } from '_api/users'
@@ -36,6 +39,9 @@ export default function RegisterRestaurant() {
   const [pincode, setpincode] = useState('')
   const [location, setlocation] = useState('')
   const [role, setRole] = useState('admin')
+  const [profilePic, setProfilePic] = useState('')
+  const [fileName, setFileName] = useState('')
+
 
   const checkPassword = (newUsername, newPassword) => {
     const { valid, message } = validatePassword(newUsername, newPassword)
@@ -90,18 +96,35 @@ export default function RegisterRestaurant() {
     checkPassword(username, e.target.value)
   }
 
-  const register = () => {
-    if (usernameAvailable && passwordValid) {
-      const newUser = {
-        username,
-        password,
-        role,
-        address,
-        restaurantName,
-        pincode,
-        location,
-      }
+  const handleFileChange =(e) =>{
+    console.log("File name ", e.target.value)
+    setFileName(e.target.value)
+    console.log("Filess ", e.target.files[0])
+    setProfilePic(e.target.files[0])
+  }
 
+  const register = () => {
+    console.log("PP ",profilePic)
+    console.log("SS ",fileName)
+
+    // const profilePic  = new FormData()
+    // profilePic.append('profilePic', profilePic)
+
+    if (usernameAvailable && passwordValid) {
+
+      const newUser  = new FormData()
+
+      newUser.append('profilePic', profilePic)
+      newUser.append('username', username)
+      newUser.append('password', password)
+      newUser.append('restaurantName', restaurantName)
+      newUser.append('location', location)
+      newUser.append('pincode', pincode)
+      newUser.append('role', role)
+      newUser.append('address', address)
+      newUser.append('role', role)
+
+      
       dispatch(attemptRestuarantRegister(newUser)).catch(R.identity)
     }
   }
@@ -229,6 +252,34 @@ export default function RegisterRestaurant() {
           />
         </Control>
       </Field>
+      <Field>
+        <Label htmlFor='file'>fuen,ds Location(City)</Label>
+        <Control iconsRight>
+          <Input
+            id='profilePic'
+            placeholder='Rdsdity)'
+            type='file'
+            // color={password ? (passwordValid ? 'success' : 'danger') : undefined}
+             value={fileName}
+            onChange={handleFileChange}
+          />
+        </Control>
+      </Field>
+      {/* <Field>
+    <File color="info" hasName >
+      <File.Label>
+        <File.Input name="file" type="file"  onChange={handleFileChange}/>
+        <File.CTA >
+          <File.Icon>
+            <FontAwesomeIcon icon={faUpload} />
+          </File.Icon>
+          <File.Text>Restaurant Image</File.Text>
+        </File.CTA>
+        <File.Name>File name </File.Name>
+      </File.Label>
+    </File>
+  </Field> */}
+
       <hr className='separator' />
       <div className='has-text-right'>
         <Button
