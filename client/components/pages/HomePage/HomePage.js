@@ -428,8 +428,8 @@ export default function HomePage() {
       <BannerCards>
         <BannerImage>
           <img
-            src='https://cdn.doordash.com/media/consumer/home/landing/new/all_in_one.jpg'
-            alt='Banner 1'
+            src='https://img.cdn4dd.com/cdn-cgi/image/fit=contain,width=1600,format=auto,quality=50/https://cdn.doordash.com/media/consumer/home/landing/new/ev_fla_wel_alt.jpg'
+            alt='Banner 2'
           />
         </BannerImage>
         <BannerText>
