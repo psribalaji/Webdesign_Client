@@ -253,11 +253,11 @@ export default function RegisterRestaurant() {
         </Control>
       </Field>
       <Field>
-        <Label htmlFor='file'>fuen,ds Location(City)</Label>
+        <Label htmlFor='file'>Attach a Restaurant Image</Label>
         <Control iconsRight>
           <Input
             id='profilePic'
-            placeholder='Rdsdity)'
+            placeholder='Restaurant Image'
             type='file'
             // color={password ? (passwordValid ? 'success' : 'danger') : undefined}
              value={fileName}

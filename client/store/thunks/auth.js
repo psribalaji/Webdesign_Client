@@ -59,6 +59,9 @@ export const attemptRegister = (newUser) => (dispatch) =>
 export const attemptLogout = () => (dispatch) =>
   postLogout()
     .then((data) => {
+      localStorage.removeItem('id')
+      localStorage.removeItem('uid')
+
       dispatch(logout())
 
       RNC.addNotification({
