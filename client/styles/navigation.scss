@@ -3,6 +3,7 @@
 
   &.has-shadow {
     box-shadow: 0 2px 3px rgba(10, 10, 10, 0.3);
+    z-index: 10000 !important;
   }
 
   .navbar-brand-right {
@@ -27,7 +28,7 @@
   }
 
   .navbar-item:not(.button).is-tab:hover {
-    border-bottom: 1px solid $white;
+    border-bottom: 3px solid $white;
   }
 
   .navbar-item:not(.button).is-tab.is-active {

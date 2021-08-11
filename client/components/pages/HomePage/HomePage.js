@@ -172,7 +172,7 @@ export default function HomePage() {
   }
 
   const lottieAnimations = [
-    SupportLottieOptions,
+    DeliveryAnimationOptions,
     FoodLottieOptions,
     SupportLottieOptions,
   ]
@@ -424,10 +424,9 @@ export default function HomePage() {
       </FeatureAnimations>
       <BannerCards>
         <BannerText>
-          <BannerTitle>It’s all here. All in one app.</BannerTitle>
+          <BannerTitle>It’s all here. All in one Website.</BannerTitle>
           <BannerDescription>
-            Discover local, on-demand delivery or Pickup from restaurants,
-            nearby grocery and convenience stores, and more.
+            Discover local, on-demand delivery or Pickup from restaurants
           </BannerDescription>
         </BannerText>
         <BannerImage>
@@ -445,10 +444,10 @@ export default function HomePage() {
           />
         </BannerImage>
         <BannerText>
-          <BannerTitle>It’s all here. All in one app.</BannerTitle>
+          <BannerTitle>Every Flavor Welcome</BannerTitle>
           <BannerDescription>
-            Discover local, on-demand delivery or Pickup from restaurants,
-            nearby grocery and convenience stores, and more.
+            From your neighborhood sushi spot to the burger and fries you crave,
+            choose from over 300,000 local and national favorites across the U.S
           </BannerDescription>
         </BannerText>
       </BannerCards>

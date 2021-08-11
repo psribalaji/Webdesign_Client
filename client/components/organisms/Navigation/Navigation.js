@@ -37,9 +37,9 @@ export default function Navigation({ pathname }) {
       : R.slice(0, 6, pathname) === '/home/'
 
   const isTodo =
-    pathname.length === 5
-      ? pathname === '/todo'
-      : R.slice(0, 6, pathname) === '/todo/'
+    pathname.length === 10
+      ? pathname === '/myOrders/'
+      : R.slice(0, 6, pathname) === '/myOrders/'
 
   const isSettings =
     pathname.length === 9
@@ -56,7 +56,7 @@ export default function Navigation({ pathname }) {
             link
           >
             <Title className='logo' size='3'>
-              Food Delivery App
+              HomeDasher
             </Title>
           </Navbar.Item>
           <div className='navbar-brand-right'>
@@ -112,19 +112,18 @@ export default function Navigation({ pathname }) {
                   <Title size='6'>Home</Title>
                 </Navbar.Item>
               )}
-              
-            {user.role == "user" && (
-           
-            <Navbar.Item
-                className="is-hidden-mobile"
-                onClick={() => dispatch(push('/myOrders/'))}
-                active={isHome}
-                tab
-                link
-              >
-                <Title size='6'>My Orders</Title>
-              </Navbar.Item>
-                 )}
+
+              {user.role == 'user' && (
+                <Navbar.Item
+                  className='is-hidden-mobile'
+                  onClick={() => dispatch(push('/myOrders/'))}
+                  active={isTodo}
+                  tab
+                  link
+                >
+                  <Title size='6'>My Orders</Title>
+                </Navbar.Item>
+              )}
               {/* <Navbar.Item
                 className="is-hidden-mobile"
                 onClick={() => dispatch(push('/todo'))}
