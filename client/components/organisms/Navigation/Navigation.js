@@ -15,6 +15,7 @@ import UserDropdown from '_molecules/UserDropdown'
 export default function Navigation({ pathname }) {
   const dispatch = useDispatch()
   const { user } = useSelector(R.pick(['user']))
+
   const [auth, setAuth] = useState(!R.isEmpty(user))
   const [open, setOpen] = useState(false)
 
@@ -35,10 +36,10 @@ export default function Navigation({ pathname }) {
       ? pathname === '/home'
       : R.slice(0, 6, pathname) === '/home/'
 
-  const isMyOrders =
+  const isTodo =
     pathname.length === 5
-      ? pathname === '/myOrders/:id'
-      : R.slice(0, 6, pathname) === '/myOrders/:id'
+      ? pathname === '/todo'
+      : R.slice(0, 6, pathname) === '/todo/'
 
   const isSettings =
     pathname.length === 9
@@ -114,7 +115,7 @@ export default function Navigation({ pathname }) {
               <Navbar.Item
                 className='is-hidden-mobile'
                 onClick={() => dispatch(push('/myOrders/:id'))}
-                active={isMyOrders}
+                active={isHome}
                 tab
                 link
               >
