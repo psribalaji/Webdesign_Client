@@ -20,6 +20,10 @@ const useRowStyles = makeStyles({
   root: {
     '& > *': {
       borderBottom: 'unset',
+      fontSize: '2vh',
+    },
+    table: {
+      fontSize: '1.75vh',
     },
   },
 })
@@ -48,16 +52,16 @@ function Row(props) {
         <TableCell align='right'>{row.total}</TableCell>
         <TableCell align='right'>{row.status}</TableCell>
       </TableRow>
-      <TableRow>
+      <TableRow className={classes.root}>
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
           <Collapse in={open} timeout='auto' unmountOnExit>
             <Box margin={1}>
-              <Typography variant='h6' gutterBottom component='div'>
+              <Typography variant='h4' gutterBottom component='div'>
                 Order Details
               </Typography>
               <Table size='small' aria-label='purchases'>
                 <TableHead>
-                  <TableRow>
+                  <TableRow className={classes.table}>
                     <TableCell>Menu Item</TableCell>
                     <TableCell>Quantity</TableCell>
                   </TableRow>
@@ -100,8 +104,7 @@ Row.propTypes = {
 }
 
 export default function MyOrders() {
-  const [order,setOrders ] = useState()
-
+  const [order, setOrders] = useState()
 
   useEffect(() => {
     console.log('useEffect called')
@@ -134,10 +137,8 @@ export default function MyOrders() {
           </TableRow>
         </TableHead>
         <TableBody>
-          { order!= undefined  && 
-          order.map((row) => (
-            <Row key={row._id} row={row} />
-          ))}
+          {order != undefined &&
+            order.map((row) => <Row key={row._id} row={row} />)}
         </TableBody>
       </Table>
     </TableContainer>
