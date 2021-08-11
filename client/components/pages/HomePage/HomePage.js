@@ -196,19 +196,20 @@ export default function HomePage() {
     return Math.round(rand)
   }
 
+  const getRestaurants = async () => {
+    try {
+      const res = await axios.get(
+        `http://localhost:3000/api/res/getRestaurants`
+      )
+      console.log('response', res)
+      setRestaurants(res.data.restaurants)
+    } catch (e) {
+      console.log(e)
+    }
+  }
+
   useEffect(() => {
     console.log('useEffect called')
-    const getRestaurants = async () => {
-      try {
-        const res = await axios.get(
-          `http://localhost:3000/api/res/getRestaurants`
-        )
-        console.log('response', res)
-        setRestaurants(res.data.restaurants)
-      } catch (e) {
-        console.log(e)
-      }
-    }
     getRestaurants()
   }, [])
 
@@ -258,19 +259,27 @@ export default function HomePage() {
   const classes = useStyles()
   const handleSearch = (searchText) => {
     console.log('Typed Text', searchText)
-    getRestaurants(searchText)
+    if (searchText) {
+      getRestaurantsByName(searchText)
+    } else {
+      getRestaurants()
+    }
   }
-  const getRestaurants = async (restaurantName) => {
+  const getRestaurantsByName = async (restaurantName) => {
     try {
       const res = await axios.get(
         `http://localhost:3000/api/res/getRestaurantsByName/` + restaurantName
       )
       console.log('response', res)
+      console.log('Length of array', res?.data?.restaurants?.length)
+
       if (res?.data?.restaurants?.length > 0) {
         await setRestaurants(res?.data?.restaurants)
       } else {
+        console.log('Entering else', res?.data?.restaurants)
         await setRestaurants([])
       }
+
       console.log('Current Restaurants', restaurants)
     } catch (e) {
       console.log('React Restaurant Error', e)
@@ -282,7 +291,10 @@ export default function HomePage() {
       <SearchBar
         value={searched}
         onChange={(searchVal) => handleSearch(searchVal)}
-        onRequestSearch={handleSearch}
+        onRequestSearch={(searchVal) => {
+          handleSearch(searchVal)
+        }}
+        onCancelSearch={() => handleSearch()}
         style={{
           margin: '0 auto',
           maxWidth: 800,
@@ -306,7 +318,7 @@ export default function HomePage() {
             justifyContent='center'
             alignItems='center'
           >
-            {restaurants?.length > 1 &&
+            {restaurants?.length > 0 &&
               restaurants?.length &&
               restaurants?.map((elem) => (
                 // {console.log('ELE ', elem)}
@@ -428,8 +440,8 @@ export default function HomePage() {
       <BannerCards>
         <BannerImage>
           <img
-            src='https://cdn.doordash.com/media/consumer/home/landing/new/all_in_one.jpg'
-            alt='Banner 1'
+            src='https://img.cdn4dd.com/cdn-cgi/image/fit=contain,width=1600,format=auto,quality=50/https://cdn.doordash.com/media/consumer/home/landing/new/ev_fla_wel_alt.jpg'
+            alt='Banner 2'
           />
         </BannerImage>
         <BannerText>
