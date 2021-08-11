@@ -276,32 +276,30 @@ class MenuList extends React.Component {
     let orderDetails = {
       user_id: localStorage.getItem('uid'),
       restaurant_id: localStorage.getItem('id'),
-      status: "Waiting for Confirmation",
+      status: 'Waiting for Confirmation',
       total: (this.state.total * 1.05).toFixed(2),
-      menu : menu
-
+      menu: menu,
     }
     console.log('mm rrr', orderDetails)
-    axios.post('http://localhost:3000/api/order/saveOrder', orderDetails)
-        .then(response => 
-          console.log("Successfully Ordered"))
-        
-    menu =[]
-    
+    axios
+      .post('http://localhost:3000/api/order/saveOrder', orderDetails)
+      .then((response) => console.log('Successfully Ordered'))
+
+    menu = []
   }
 
-createOrder(data, actions) {
-  this.order()
-  return actions.order.create({
-    purchase_units: [
-      {
-        amount: {
-          value: (this.state.total * 1.05).toFixed(2),
+  createOrder(data, actions) {
+    this.order()
+    return actions.order.create({
+      purchase_units: [
+        {
+          amount: {
+            value: (this.state.total * 1.05).toFixed(2),
+          },
         },
-      }
       ],
     })
-}
+  }
 
   onApprove(data, actions) {
     return actions.order.capture()
@@ -335,11 +333,12 @@ createOrder(data, actions) {
             <Total total={this.state.total} />
             <br></br>
             {/* <Button variant='primary' onClick={this.order}>Order Now</Button>{' '} */}
-            
-            <PayPalButton
-              createOrder={(data, actions) => this.createOrder(data, actions)}
-              onApprove={(data, actions) => this.onApprove(data, actions)}
-            />
+            {this.state.total > 0 && (
+              <PayPalButton
+                createOrder={(data, actions) => this.createOrder(data, actions)}
+                onApprove={(data, actions) => this.onApprove(data, actions)}
+              />
+            )}
           </Col>
           <Col>
             <GoogleMap1 address={this.state.address} />
