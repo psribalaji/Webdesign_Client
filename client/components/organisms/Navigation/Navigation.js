@@ -116,7 +116,9 @@ export default function Navigation({ pathname }) {
 
 
 
-            )}
+            )}{
+              user.role == "user" && (
+           
             <Navbar.Item
                 className="is-hidden-mobile"
                 onClick={() => dispatch(push('/myOrders/:id'))}
@@ -126,6 +128,7 @@ export default function Navigation({ pathname }) {
               >
                 <Title size="6">My Orders</Title>
               </Navbar.Item>
+                 )}
               {/* <Navbar.Item
                 className="is-hidden-mobile"
                 onClick={() => dispatch(push('/todo'))}

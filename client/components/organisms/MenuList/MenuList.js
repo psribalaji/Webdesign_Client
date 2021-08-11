@@ -240,24 +240,28 @@ class MenuList extends React.Component {
       user_id: localStorage.getItem('uid'),
       restaurant_id: localStorage.getItem('id'),
       status: "Waiting for Confirmation",
-      total: this.state.total * 1.05,
+      total: (this.state.total * 1.05).toFixed(2),
       menu : menu
 
     }
     console.log('mm rrr', orderDetails)
     axios.post('http://localhost:3000/api/order/saveOrder', orderDetails)
         .then(response => 
-          alert("Successfully Ordered")
+          console.log("Successfully Ordered")
+          
     );
+    menu =[]
+    
 
   }
 
 createOrder(data, actions) {
+  this.order()
   return actions.order.create({
     purchase_units: [
       {
         amount: {
-          value: this.state.total * 1.05,
+          value: (this.state.total * 1.05).toFixed(2),
         },
       },
     ],
@@ -299,7 +303,7 @@ onApprove(data, actions) {
             {products}
             <Total total={this.state.total} />
             <br></br>
-            <Button variant='primary' onClick={this.order}>Order Now</Button>{' '}
+            {/* <Button variant='primary' onClick={this.order}>Order Now</Button>{' '} */}
             
             <PayPalButton
                 createOrder={(data, actions) => this.createOrder(data, actions)}

@@ -38,11 +38,11 @@ export default function UserDropdown({ open, closeDropdown }) {
           {user.usernameCase}
         </li>
         <hr className="dropdown-separator" />
-        <li className="dropdown-item">
+        {/* <li className="dropdown-item">
           <Link to="/todo" onClick={closeDropdown}>
             Todo List
           </Link>
-        </li>
+        </li> */}
         <li className="dropdown-item">
           <Link to="/settings" onClick={closeDropdown}>
             Settings

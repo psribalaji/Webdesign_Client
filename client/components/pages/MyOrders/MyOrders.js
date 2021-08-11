@@ -102,7 +102,7 @@ Row.propTypes = {
 
 
 export default function MyOrders() {
-  const [order,setOrders ] = useState([{}])
+  const [order,setOrders ] = useState()
 
 
   useEffect(() => {
@@ -135,7 +135,7 @@ export default function MyOrders() {
           </TableRow>
         </TableHead>
         <TableBody>
-          { order.length > 1 && 
+          { order!= undefined  && 
           order.map((row) => (
             <Row key={row._id} row={row} />
           ))}
