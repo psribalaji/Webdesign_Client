@@ -3,7 +3,7 @@ import './App.css'
 import { forwardRef } from 'react'
 import Avatar from 'react-avatar'
 import Grid from '@material-ui/core/Grid'
-import R from 'ramda'
+import R, { isEmpty } from 'ramda'
 import { useDispatch, useSelector } from 'react-redux'
 import { Map, GoogleApiWrapper } from 'google-maps-react'
 
@@ -65,10 +65,9 @@ function Menu() {
   const { user } = useSelector(R.pick(['user']))
   console.log('III ', user)
   var columns = [
-    { title: 'id', field: '_id', hidden: true },
-    // {title: "Menu Image", render: rowData => <Avatar maxInitials={1} size={40} round={true} name={rowData === undefined ? " " : rowData.first_name} />  },
-    { title: 'Menu Item', field: 'itemName' },
-    { title: 'Price', field: 'price' },
+    { title: 'id', field: '_id',  hidden: true },
+    { title: 'Menu Item', field: 'itemName', validate: rowData =>(rowData.itemName ? true : 'Item Name can not be empty') },
+    { title: 'Price', field: 'price', type: 'numeric', validate: rowData => (rowData.price ? true : 'Price can not be empty'), },
     // {title: "email", field: "email"}
   ]
   const [data, setData] = useState([]) //table data
@@ -93,15 +92,6 @@ function Menu() {
   const handleRowUpdate = (newData, oldData, resolve) => {
     //validation
     let errorList = []
-    // if(newData.first_name === ""){
-    //   errorList.push("Please enter first name")
-    // }
-    // if(newData.last_name === ""){
-    //   errorList.push("Please enter last name")
-    // }
-    // if(newData.email === "" || validateEmail(newData.email) === false){
-    //   errorList.push("Please enter a valid email")
-    // }
 
     if (errorList.length < 1) {
       api
@@ -140,29 +130,45 @@ function Menu() {
     //   errorList.push("Please enter a valid email")
     // }
 
-    if (errorList.length < 1) {
-      //no error
-      api
-        .post('http://localhost:8080/api/res/addMenu', newData)
-        .then((res) => {
-          let dataToAdd = [...data]
-          dataToAdd.push(newData)
-          //dataToAdd.push(user.restaurantID)
-          setData(dataToAdd)
-          resolve()
-          setErrorMessages([])
-          setIserror(false)
-        })
-        .catch((error) => {
-          setErrorMessages(['Cannot add data. Server error!'])
-          setIserror(true)
-          resolve()
-        })
-    } else {
-      setErrorMessages(errorList)
-      setIserror(true)
+    function isEmpty(obj) {
+      return Object.keys(obj).length === 0;
+  }
+
+    console.log("Data Check", newData)
+    console.log("Data Check Boolean",!isEmpty(newData))
+
+    if(newData && !isEmpty(newData)) {
+      console.log("aaa")
+      if (errorList.length < 1) {
+
+        //no error
+        api
+          .post('http://localhost:8080/api/res/addMenu', newData)
+          .then((res) => {
+            let dataToAdd = [...data]
+            dataToAdd.push(newData)
+            //dataToAdd.push(user.restaurantID)
+            setData(dataToAdd)
+            resolve()
+            setErrorMessages([])
+            setIserror(false)
+          })
+          .catch((error) => {
+            setErrorMessages(['Cannot add data. Server error!'])
+            setIserror(true)
+            resolve()
+          })
+      } else {
+        setErrorMessages(errorList)
+        setIserror(true)
+        resolve()
+      }
+    }else{
+      
       resolve()
     }
+
+   
   }
 
   const handleRowDelete = (oldData, resolve) => {
@@ -207,10 +213,11 @@ function Menu() {
                 new Promise((resolve) => {
                   handleRowUpdate(newData, oldData, resolve)
                 }),
-              onRowAdd: (newData) =>
-                new Promise((resolve) => {
-                  handleRowAdd(newData, resolve)
-                }),
+              onRowAdd: (newData) =>  {
+                  new Promise((resolve) => {
+                    handleRowAdd(newData, resolve)
+                  }) 
+              },
               onRowDelete: (oldData) =>
                 new Promise((resolve) => {
                   handleRowDelete(oldData, resolve)
