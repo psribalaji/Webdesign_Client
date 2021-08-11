@@ -29,6 +29,10 @@ function Row(props) {
   const [open, setOpen] = React.useState(false)
   const classes = useRowStyles()
 
+var date =  row.created_at;
+console.log("Date Value:: ", date)
+console.log("Testing Date", new Date(date).toString().split(' GMT')[0])
+
   return (
     <React.Fragment>
       <TableRow className={classes.root}>
@@ -44,7 +48,7 @@ function Row(props) {
         <TableCell component='th' scope='row'>
           {row.restaurant_id.restaurantName}
         </TableCell>
-        <TableCell align='right'>{row.created_at}</TableCell>
+        <TableCell align='right'>{new Date(date).toString().split(' GMT')[0]}</TableCell>
         <TableCell align='right'>{row.total}</TableCell>
         <TableCell align='right'>{row.status}</TableCell>
       </TableRow>

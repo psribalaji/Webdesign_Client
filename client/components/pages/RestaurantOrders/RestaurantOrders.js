@@ -73,7 +73,9 @@ const handleReject = id => {
       setFlag(!flag)
 
  };
-
+var date =  row.created_at;
+console.log("Date Value:: ", date)
+console.log("Testing Date", new Date(date).toString().split(' GMT')[0])
 
   return (
     <React.Fragment>
@@ -86,7 +88,7 @@ const handleReject = id => {
         <TableCell component="th" scope="row">
           {row.user_id.username}
         </TableCell>
-        <TableCell align="right">{row.created_at}</TableCell>
+        <TableCell align="right">{new Date(date).toString().split(' GMT')[0]}</TableCell>
         <TableCell align="right">{row.total}</TableCell>
         <TableCell align="right">{row.status}</TableCell>
         <TableCell>
@@ -100,6 +102,7 @@ const handleReject = id => {
             onClick={() => handleReject(row._id)}  variant="contained" color="secondary">
         Reject
         </Button>
+        
                    
  </TableCell>
       </TableRow>
