@@ -5,7 +5,7 @@ import ChangePassword from '_organisms/ChangePassword';
 export default function Account() {
   return (
     <div className="account-settings">
-      <ChangeUsername />
+      {/* <ChangeUsername /> */}
       <ChangePassword />
     </div>
   );

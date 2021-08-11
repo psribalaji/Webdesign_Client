@@ -59,7 +59,7 @@ export const attemptUpdatePassword = passwordInfo => dispatch =>
     
     .then(data => {
       console.log(data+"jjjj")
-      dispatch(updateUser(snakeToCamelCase(data.body)));
+      // dispatch(updateUser(snakeToCamelCase(data.body)));
 
       RNC.addNotification({
         title: 'Success!',

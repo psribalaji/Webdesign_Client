@@ -150,7 +150,7 @@ export default function GeneralProfile() {
               alt="Profile"
             />
           </Image>
-          <Field>
+          {/* <Field>
             <Label htmlFor="profile-pic-url">
               Picture URL
             </Label>
@@ -162,7 +162,7 @@ export default function GeneralProfile() {
                 onChange={updateProfilePic}
               />
             </Control>
-          </Field>
+          </Field> */}
         </Column>
         <Column size="8">
           <Columns>

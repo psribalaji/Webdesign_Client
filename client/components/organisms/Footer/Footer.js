@@ -44,33 +44,30 @@ export default function FooterComponent() {
             </MDBCol>
             <hr className='w-100 clearfix d-md-none' />
             <MDBCol md='2' lg='2' xl='2' className='mx-auto mt-3'>
-              <h6 className='text-uppercase mb-4 font-weight-bold'>Products</h6>
+              <h6 className='text-uppercase mb-4 font-weight-bold'>Top Cusines near Me</h6>
               <p>
-                <a href='#!'>MDBootstrap</a>
+                <a href='#!'>Pizza Near Me</a>
               </p>
               <p>
-                <a href='#!'>MDWordPress</a>
+                <a href='#!'>Sushi Near Me</a>
               </p>
               <p>
-                <a href='#!'>BrandFlow</a>
+                <a href='#!'>SeaFood Near Me</a>
               </p>
               <p>
-                <a href='#!'>Bootstrap Angular</a>
+                <a href='#!'>Coffee Near Me</a>
               </p>
             </MDBCol>
             <hr className='w-100 clearfix d-md-none' />
             <MDBCol md='3' lg='2' xl='2' className='mx-auto mt-3'>
               <h6 className='text-uppercase mb-4 font-weight-bold'>
-                Useful links
+              Let us Help You
               </h6>
-              <p>
-                <a href='#!'>Your Account</a>
-              </p>
               <p>
                 <a href='#!'>Become an Affiliate</a>
               </p>
               <p>
-                <a href='#!'>Shipping Rates</a>
+                <a href='#!'>Account Details</a>
               </p>
               <p>
                 <a href='#!'>Help</a>
@@ -80,10 +77,10 @@ export default function FooterComponent() {
             <MDBCol md='4' lg='3' xl='3' className='mx-auto mt-3'>
               <h6 className='text-uppercase mb-4 font-weight-bold'>Contact</h6>
               <p>
-                <i className='fa fa-home mr-3' /> New York, NY 10012, US
+                <i className='fa fa-home mr-3' /> Boston, MA 02120, US
               </p>
               <p>
-                <i className='fa fa-envelope mr-3' /> info@gmail.com
+                <i className='fa fa-envelope mr-3' /> info@fooddelivery.com
               </p>
               <p>
                 <i className='fa fa-phone mr-3' /> + 01 234 567 88

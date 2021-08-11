@@ -21,7 +21,7 @@ export const dispatchError = dispatch => error => {
   }
 
   RNC.addNotification({
-    title: `Error: ${error.status}`,
+    title: `Error`,
     message: error.text,
     type: 'danger',
     container: 'top-right',
